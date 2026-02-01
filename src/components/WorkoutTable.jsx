@@ -1,24 +1,15 @@
-import { useEffect, useState } from "react"
 import axios from "axios"
 
-function WorkoutTable() {
+function WorkoutTable({ workouts, onWorkoutDelete }) {
 
-  const [workouts, setWorkouts] = useState([])
+  const deleteWorkout = async (id) => {
+    await axios.delete(
+      `${import.meta.env.VITE_API_URL}/api/workouts/${id}`
+    )
 
-  useEffect(() => {
-    fetchWorkouts()
-  }, [])
-
-  const fetchWorkouts = async () => {
-  const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/workouts`)
-  setWorkouts(res.data)
-}
-
-const deleteWorkout = async (id) => {
-  await axios.delete(`${import.meta.env.VITE_API_URL}/api/workouts/${id}`)
-  fetchWorkouts()
-}
-
+    // Remove from UI instantly
+    onWorkoutDelete(id)
+  }
 
   return (
     <div className="bg-slate-800/70 backdrop-blur-xl border border-slate-700 rounded-2xl shadow-xl overflow-hidden">

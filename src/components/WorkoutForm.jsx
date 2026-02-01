@@ -10,6 +10,8 @@ function WorkoutForm({ onWorkoutAdded }) {
     weight: ""
   })
 
+  const [loading, setLoading] = useState(false)
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -21,14 +23,24 @@ function WorkoutForm({ onWorkoutAdded }) {
     e.preventDefault()
 
     try {
+      setLoading(true)
+
       const res = await axios.post(
-        import.meta.env.VITE_API_URL + "/api/workouts",
-        formData
+        `${import.meta.env.VITE_API_URL}/api/workouts`,
+        {
+          exercise: formData.exercise,
+          sets: Number(formData.sets),
+          reps: Number(formData.reps),
+          weight: Number(formData.weight)
+        }
       )
 
-      // update UI without reload
-      onWorkoutAdded(res.data)
+      // Update UI instantly
+      if (onWorkoutAdded) {
+        onWorkoutAdded(res.data)
+      }
 
+      // Clear form
       setFormData({
         exercise: "",
         sets: "",
@@ -37,17 +49,19 @@ function WorkoutForm({ onWorkoutAdded }) {
       })
 
     } catch (error) {
-      console.log(error)
+      console.log(error.response?.data || error.message)
+      alert(error.response?.data?.error || "API Error")
+
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
     <section className="xl:col-span-1">
 
-      {/* CARD */}
       <div className="bg-slate-800/70 backdrop-blur-xl border border-slate-700 p-6 rounded-2xl shadow-xl sticky top-24">
 
-        {/* HEADER */}
         <div className="flex items-center gap-2 mb-6">
           <span className="text-blue-400 text-xl">➕</span>
           <h3 className="text-lg font-semibold">
@@ -57,79 +71,55 @@ function WorkoutForm({ onWorkoutAdded }) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
 
-          {/* Exercise */}
-          <div>
-            <label className="text-xs text-slate-400 uppercase tracking-wide">
-              Exercise Name
-            </label>
+          <input
+            name="exercise"
+            value={formData.exercise}
+            onChange={handleChange}
+            placeholder="Bench Press"
+            className="w-full bg-slate-900/60 border border-slate-700 rounded-xl px-4 py-2.5 outline-none"
+            required
+          />
 
-            <input
-              name="exercise"
-              value={formData.exercise}
-              onChange={handleChange}
-              placeholder="Bench Press"
-              className="mt-1 w-full bg-slate-900/60 border border-slate-700 rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-
-          {/* Sets + Reps */}
           <div className="grid grid-cols-2 gap-4">
 
-            <div>
-              <label className="text-xs text-slate-400 uppercase">
-                Sets
-              </label>
-
-              <input
-                name="sets"
-                value={formData.sets}
-                onChange={handleChange}
-                type="number"
-                className="mt-1 w-full bg-slate-900/60 border border-slate-700 rounded-xl px-4 py-2 outline-none"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="text-xs text-slate-400 uppercase">
-                Reps
-              </label>
-
-              <input
-                name="reps"
-                value={formData.reps}
-                onChange={handleChange}
-                type="number"
-                className="mt-1 w-full bg-slate-900/60 border border-slate-700 rounded-xl px-4 py-2 outline-none"
-                required
-              />
-            </div>
-
-          </div>
-
-          {/* Weight */}
-          <div>
-            <label className="text-xs text-slate-400 uppercase">
-              Weight (kg)
-            </label>
-
             <input
-              name="weight"
-              value={formData.weight}
+              name="sets"
+              value={formData.sets}
               onChange={handleChange}
               type="number"
-              className="mt-1 w-full bg-slate-900/60 border border-slate-700 rounded-xl px-4 py-2 outline-none"
+              placeholder="Sets"
+              className="bg-slate-900/60 border border-slate-700 rounded-xl px-4 py-2"
               required
             />
+
+            <input
+              name="reps"
+              value={formData.reps}
+              onChange={handleChange}
+              type="number"
+              placeholder="Reps"
+              className="bg-slate-900/60 border border-slate-700 rounded-xl px-4 py-2"
+              required
+            />
+
           </div>
 
-          {/* BUTTON */}
+          <input
+            name="weight"
+            value={formData.weight}
+            onChange={handleChange}
+            type="number"
+            placeholder="Weight (kg)"
+            className="w-full bg-slate-900/60 border border-slate-700 rounded-xl px-4 py-2"
+            required
+          />
+
           <button
             type="submit"
-            className="w-full mt-3 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-semibold transition active:scale-95 shadow-lg shadow-blue-500/20"
+            disabled={loading}
+            className="w-full bg-blue-500 hover:bg-blue-600 disabled:opacity-60 text-white py-3 rounded-xl font-semibold"
           >
-            + Add Workout
+            {loading ? "Adding..." : "+ Add Workout"}
           </button>
 
         </form>
