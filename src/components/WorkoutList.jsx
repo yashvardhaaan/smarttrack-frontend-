@@ -6,14 +6,14 @@ function WorkoutList() {
   const [workouts, setWorkouts] = useState([])
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/workouts")
-      .then(res => setWorkouts(res.data))
-  }, [])
+  axios.get(`${import.meta.env.VITE_API_URL}/api/workouts`)
+    .then(res => setWorkouts(res.data))
+}, [])
 
-  const deleteWorkout = async (id) => {
-    await axios.delete(`http://localhost:5000/api/workouts/${id}`)
-    window.location.reload()
-  }
+const deleteWorkout = async (id) => {
+  await axios.delete(`${import.meta.env.VITE_API_URL}/api/workouts/${id}`)
+  window.location.reload()
+}
 
   return (
     <div>

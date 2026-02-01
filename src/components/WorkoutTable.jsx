@@ -10,14 +10,15 @@ function WorkoutTable() {
   }, [])
 
   const fetchWorkouts = async () => {
-    const res = await axios.get("http://localhost:5000/api/workouts")
-    setWorkouts(res.data)
-  }
+  const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/workouts`)
+  setWorkouts(res.data)
+}
 
-  const deleteWorkout = async (id) => {
-    await axios.delete(`http://localhost:5000/api/workouts/${id}`)
-    fetchWorkouts()
-  }
+const deleteWorkout = async (id) => {
+  await axios.delete(`${import.meta.env.VITE_API_URL}/api/workouts/${id}`)
+  fetchWorkouts()
+}
+
 
   return (
     <div className="bg-slate-800/70 backdrop-blur-xl border border-slate-700 rounded-2xl shadow-xl overflow-hidden">

@@ -22,7 +22,7 @@ function WorkoutForm({ onWorkoutAdded }) {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/workouts",
+        import.meta.env.VITE_API_URL + "/api/workouts",
         formData
       )
 
