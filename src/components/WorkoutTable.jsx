@@ -12,7 +12,8 @@ function WorkoutTable({ workouts, onWorkoutDelete }) {
   }
 
   return (
-    <div className="bg-slate-800/70 backdrop-blur-xl border border-slate-700 rounded-2xl shadow-xl overflow-hidden">
+    <div className="bg-slate-800/70 backdrop-blur-xl border border-slate-700 rounded-2xl shadow-xl overflow-x-auto">
+
 
       <div className="p-4 font-semibold text-white">
         Your Recent Activity

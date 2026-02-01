@@ -1,6 +1,6 @@
 function Sidebar() {
   return (
-    <aside className="w-64 h-screen border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col">
+    <aside className="hidden lg:flex w-64 min-h-screen border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex-col">
 
       <div className="p-6">
 

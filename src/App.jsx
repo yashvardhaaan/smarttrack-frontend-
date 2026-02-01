@@ -34,10 +34,9 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen flex 
-bg-slate-100 dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 
+    <div className="min-h-screen flex flex-col lg:flex-row overflow-x-hidden
+bg-slate-100 dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-900 dark:to-slate-800
 text-slate-900 dark:text-slate-100">
-
 
       <Sidebar />
 
@@ -45,7 +44,8 @@ text-slate-900 dark:text-slate-100">
 
         <Header />
 
-        <main className="p-8 max-w-7xl mx-auto w-full">
+       <main className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
+
 
           <h1 className="text-3xl font-bold mb-8">
             Smart Workout Tracker 💪
